@@ -7,489 +7,590 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Patrick+Hand&display=swap');
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        body {
-            background-color: #000;
-            font-family: 'Patrick Hand', cursive;
-        }
+body {
+    background-color: #000;
+    font-family: 'Patrick Hand', cursive;
+}
 
-        /* -------- QUESTION SCREEN -------- */
-        #question-screen {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            gap: 40px;
-        }
+/* -------- QUESTION SCREEN -------- */
+#question-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    gap: 40px;
+}
 
-        #question-screen h1 {
-            color: #fff;
-            font-family: 'Dancing Script', cursive;
-            font-size: 3.5rem;
-            text-align: center;
-        }
+#question-screen h1 {
+    color: #fff;
+    font-family: 'Dancing Script', cursive;
+    font-size: 3.5rem;
+    text-align: center;
+}
 
-        .buttons {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            justify-content: center;
-        }
+.buttons {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+}
 
-        #yes-btn, #no-btn {
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            font-family: 'Patrick Hand', cursive;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
+#yes-btn, #no-btn {
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: 'Patrick Hand', cursive;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
 
-        #yes-btn {
-            background-color: #e74c7d;
-            color: #fff;
-            font-size: 1.2rem;
-            padding: 15px 40px;
-        }
+#yes-btn {
+    background-color: #e74c7d;
+    color: #fff;
+    font-size: 1.2rem;
+    padding: 15px 40px;
+}
 
-        #yes-btn:hover {
-            background-color: #ff6b9d;
-            transform: scale(1.05);
-        }
+#yes-btn:hover {
+    background-color: #ff6b9d;
+    transform: scale(1.05);
+}
 
-        #no-btn {
-            background-color: #555;
-            color: #ccc;
-            font-size: 1.2rem;
-            padding: 15px 40px;
-        }
+#no-btn {
+    background-color: #555;
+    color: #ccc;
+    font-size: 1.2rem;
+    padding: 15px 40px;
+}
 
-        #no-btn:hover {
-            background-color: #666;
-        }
+#no-btn:hover {
+    background-color: #666;
+}
 
-        /* -------- LOVE SCREEN (page 1) -------- */
-        #love-screen {
-            display: none;
-            width: 100%;
-            min-height: 100vh;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
+/* -------- LOVE SCREEN (DESKTOP: row layout) -------- */
+#love-screen {
+    display: none;
+    width: 100%;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    flex-direction: row; /* side by side on desktop */
+}
 
-        .center-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 2;
-            flex: 1;
-            padding: 0 20px;
-        }
+.center-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    flex: 1;
+    padding: 0 20px;
+}
 
-        #love-text {
-            font-family: 'Dancing Script', cursive;
-            color: #e74c7d;
-            font-size: 4rem;
-            text-align: center;
-            text-shadow: 0 0 20px rgba(231, 76, 125, 0.5);
-            animation: pulse 1s ease-in-out infinite alternate;
-        }
+#love-text {
+    font-family: 'Dancing Script', cursive;
+    color: #e74c7d;
+    font-size: 4rem;
+    text-align: center;
+    text-shadow: 0 0 20px rgba(231, 76, 125, 0.5);
+    animation: pulse 1s ease-in-out infinite alternate;
+}
 
-        @keyframes pulse {
-            from { transform: scale(1); }
-            to   { transform: scale(1.05); }
-        }
+@keyframes pulse {
+    from { transform: scale(1); }
+    to   { transform: scale(1.05); }
+}
 
-        #language-label {
-            font-family: 'Patrick Hand', cursive;
-            color: #888;
-            font-size: 1rem;
-            margin-top: 10px;
-            z-index: 2;
-            letter-spacing: 1px;
-        }
+#language-label {
+    font-family: 'Patrick Hand', cursive;
+    color: #888;
+    font-size: 1rem;
+    margin-top: 10px;
+    z-index: 2;
+    letter-spacing: 1px;
+}
 
-        /* scroll hint arrow */
-        .scroll-hint {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #e74c7d;
-            font-size: 0.9rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            animation: bounceDown 1.5s ease-in-out infinite;
-            z-index: 10;
-            cursor: pointer;
-        }
+/* scroll hint arrow */
+.scroll-hint {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #e74c7d;
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    animation: bounceDown 1.5s ease-in-out infinite;
+    z-index: 10;
+    cursor: pointer;
+}
 
-        .scroll-hint span {
-            font-family: 'Patrick Hand', cursive;
-            letter-spacing: 1px;
-        }
+.scroll-hint span {
+    font-family: 'Patrick Hand', cursive;
+    letter-spacing: 1px;
+}
 
-        .scroll-hint .arrow {
-            font-size: 1.5rem;
-        }
+.scroll-hint .arrow {
+    font-size: 1.5rem;
+}
 
-        @keyframes bounceDown {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50%       { transform: translateX(-50%) translateY(10px); }
-        }
+@keyframes bounceDown {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50%       { transform: translateX(-50%) translateY(10px); }
+}
 
-        /* -------- PHOTO COLUMNS -------- */
-        .photos-left, .photos-right {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            padding: 15px;
-            z-index: 1;
-            height: 100vh;
-            justify-content: flex-start;
-            overflow: hidden;
-            flex-shrink: 0;
-        }
+/* -------- PHOTO COLUMNS (DESKTOP) -------- */
+.photos-left, .photos-right {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 15px;
+    z-index: 1;
+    height: 100vh;
+    justify-content: flex-start;
+    overflow: hidden;
+    flex-shrink: 0;
+}
 
-        .photos-left { width: 210px; }
-        .photos-right { width: 210px; }
+.photos-left { width: 210px; }
+.photos-right { width: 210px; }
 
-        .polaroid {
-            background: #fff;
-            padding: 10px 10px 35px 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            transform: rotate(var(--rotation));
-            transition: transform 0.3s ease;
-            width: 175px;
-            flex-shrink: 0;
-        }
+.polaroid {
+    background: #fff;
+    padding: 10px 10px 35px 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    transform: rotate(var(--rotation));
+    transition: transform 0.3s ease;
+    width: 175px;
+    flex-shrink: 0;
+}
 
-        .polaroid:hover {
-            transform: rotate(0deg) scale(1.1);
-            z-index: 10;
-        }
+.polaroid:hover {
+    transform: rotate(0deg) scale(1.1);
+    z-index: 10;
+}
 
-        .polaroid img {
-            width: 100%;
-            height: 140px;
-            object-fit: cover;
-            display: block;
-        }
+.polaroid img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    display: block;
+}
 
-        .polaroid .caption {
-            text-align: center;
-            font-family: 'Patrick Hand', cursive;
-            font-size: 0.82rem;
-            color: #333;
-            margin-top: 8px;
-        }
+.polaroid .caption {
+    text-align: center;
+    font-family: 'Patrick Hand', cursive;
+    font-size: 0.82rem;
+    color: #333;
+    margin-top: 8px;
+}
 
-        .scroll-track {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            animation: scrollUp var(--scroll-speed) linear infinite;
-        }
+/* Desktop scroll tracks */
+.scroll-track {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    animation: scrollUp var(--scroll-speed) linear infinite;
+}
 
-        .photos-right .scroll-track {
-            animation: scrollDown var(--scroll-speed) linear infinite;
-        }
+.photos-right .scroll-track {
+    animation: scrollDown var(--scroll-speed) linear infinite;
+}
 
-        @keyframes scrollUp {
-            0%   { transform: translateY(0); }
-            100% { transform: translateY(-50%); }
-        }
+@keyframes scrollUp {
+    0%   { transform: translateY(0); }
+    100% { transform: translateY(-50%); }
+}
 
-        @keyframes scrollDown {
-            0%   { transform: translateY(-50%); }
-            100% { transform: translateY(0); }
-        }
+@keyframes scrollDown {
+    0%   { transform: translateY(-50%); }
+    100% { transform: translateY(0); }
+}
 
-        /* -------- FLOATING HEARTS -------- */
-        .heart {
-            position: fixed;
-            animation: floatUp linear;
-            opacity: 0;
-            z-index: 0;
-            pointer-events: none;
-        }
+/* -------- FLOATING HEARTS -------- */
+.heart {
+    position: fixed;
+    animation: floatUp linear;
+    opacity: 0;
+    z-index: 0;
+    pointer-events: none;
+}
 
-        @keyframes floatUp {
-            0%   { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10%  { opacity: 1; }
-            90%  { opacity: 1; }
-            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
-        }
+@keyframes floatUp {
+    0%   { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+}
 
-        /* ======================================
-           STARRY NIGHT SECTION
-        ====================================== */
-        #starry-section {
-            display: none;
-            position: relative;
-            min-height: 100vh;
-            width: 100%;
-            background: linear-gradient(to bottom, #000010, #0a0020, #000010);
-            overflow: hidden;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 60px 20px;
-        }
+/* ======================================
+   STARRY NIGHT SECTION
+====================================== */
+#starry-section {
+    display: none;
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    background: linear-gradient(to bottom, #000010, #0a0020, #000010);
+    overflow: hidden;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+}
 
-        #stars-canvas {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 0;
-        }
+#stars-canvas {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 0;
+}
 
-        #fireworks-canvas {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 1;
-            pointer-events: none;
-        }
+#fireworks-canvas {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
 
-        /* -------- TIMER -------- */
-        .timer-wrapper {
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 60px;
-        }
+/* -------- TIMER -------- */
+.timer-wrapper {
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 60px;
+}
 
-        .timer-title {
-            font-family: 'Dancing Script', cursive;
-            color: #fff;
-            font-size: 2.8rem;
-            text-align: center;
-            text-shadow: 0 0 20px rgba(231, 76, 125, 0.8);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+.timer-title {
+    font-family: 'Dancing Script', cursive;
+    color: #fff;
+    font-size: 2.8rem;
+    text-align: center;
+    text-shadow: 0 0 20px rgba(231, 76, 125, 0.8);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
 
-        .clickable-heart {
-            cursor: pointer;
-            transition: transform 0.2s;
-            animation: pulse-heart 1.5s infinite alternate;
-            display: inline-block;
-            position: relative;
-        }
-        .clickable-heart:hover {
-            transform: scale(1.3);
-            text-shadow: 0 0 30px #fff;
-        }
+.clickable-heart {
+    cursor: pointer;
+    transition: transform 0.2s;
+    animation: pulse-heart 1.5s infinite alternate;
+    display: inline-block;
+    position: relative;
+}
+.clickable-heart:hover {
+    transform: scale(1.3);
+    text-shadow: 0 0 30px #fff;
+}
 
-        .clickable-heart .tooltip {
-            position: absolute;
-            bottom: -28px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-family: 'Patrick Hand', cursive;
-            font-size: 0.7rem;
-            color: #e74c7d;
-            white-space: nowrap;
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
-        }
+.clickable-heart .tooltip {
+    position: absolute;
+    bottom: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Patrick Hand', cursive;
+    font-size: 0.7rem;
+    color: #e74c7d;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
 
-        .clickable-heart:hover .tooltip {
-            opacity: 1;
-        }
+.clickable-heart:hover .tooltip {
+    opacity: 1;
+}
 
-        @keyframes pulse-heart {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.15); }
-        }
+@keyframes pulse-heart {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.15); }
+}
 
-        .timer-subtitle {
-            font-family: 'Patrick Hand', cursive;
-            color: #e74c7d;
-            font-size: 1.1rem;
-            text-align: center;
-            opacity: 0.9;
-        }
+.timer-subtitle {
+    font-family: 'Patrick Hand', cursive;
+    color: #e74c7d;
+    font-size: 1.1rem;
+    text-align: center;
+    opacity: 0.9;
+}
 
-        .timer-boxes {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
+.timer-boxes {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
 
-        .timer-box {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(231, 76, 125, 0.3);
-            border-radius: 16px;
-            padding: 20px 30px;
-            min-width: 100px;
-            backdrop-filter: blur(4px);
-            box-shadow: 0 0 20px rgba(231, 76, 125, 0.15);
-        }
+.timer-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(231, 76, 125, 0.3);
+    border-radius: 16px;
+    padding: 20px 30px;
+    min-width: 100px;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 0 20px rgba(231, 76, 125, 0.15);
+}
 
-        .timer-number {
-            font-family: 'Dancing Script', cursive;
-            font-size: 3.5rem;
-            color: #e74c7d;
-            text-shadow: 0 0 15px rgba(231, 76, 125, 0.6);
-            line-height: 1;
-        }
+.timer-number {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3.5rem;
+    color: #e74c7d;
+    text-shadow: 0 0 15px rgba(231, 76, 125, 0.6);
+    line-height: 1;
+}
 
-        .timer-label {
-            font-family: 'Patrick Hand', cursive;
-            font-size: 0.85rem;
-            color: #aaa;
-            margin-top: 8px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
+.timer-label {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 0.85rem;
+    color: #aaa;
+    margin-top: 8px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
 
-        /* -------- LOVE MESSAGE -------- */
-        .love-message {
-            z-index: 2;
-            max-width: 600px;
-            text-align: center;
-            padding: 30px 40px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(231, 76, 125, 0.2);
-            border-radius: 20px;
-            backdrop-filter: blur(6px);
-            box-shadow: 0 0 40px rgba(231, 76, 125, 0.1);
-        }
+/* -------- LOVE MESSAGE -------- */
+.love-message {
+    z-index: 2;
+    max-width: 600px;
+    text-align: center;
+    padding: 30px 40px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(231, 76, 125, 0.2);
+    border-radius: 20px;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 0 40px rgba(231, 76, 125, 0.1);
+}
 
-        .love-message p {
-            font-family: 'Dancing Script', cursive;
-            color: #fff;
-            font-size: 1.6rem;
-            line-height: 1.8;
-            text-shadow: 0 0 10px rgba(255,255,255,0.1);
-        }
+.love-message p {
+    font-family: 'Dancing Script', cursive;
+    color: #fff;
+    font-size: 1.6rem;
+    line-height: 1.8;
+    text-shadow: 0 0 10px rgba(255,255,255,0.1);
+}
 
-        .love-message .signature {
-            margin-top: 20px;
-            font-family: 'Dancing Script', cursive;
-            color: #e74c7d;
-            font-size: 1.3rem;
-        }
+.love-message .signature {
+    margin-top: 20px;
+    font-family: 'Dancing Script', cursive;
+    color: #e74c7d;
+    font-size: 1.3rem;
+}
 
-        /* -------- REASONS MODAL -------- */
-        #reasons-modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.75);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(8px);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
+/* -------- REASONS MODAL -------- */
+#reasons-modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
 
-        .modal-content {
-            background: rgba(20, 0, 15, 0.92);
-            border: 1px solid #e74c7d;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 600px;
-            max-height: 80vh;
-            padding: 40px 30px;
-            position: relative;
-            box-shadow: 0 0 60px rgba(231, 76, 125, 0.4);
-            overflow-y: auto;
-            color: #fff;
-            text-align: left;
-        }
+.modal-content {
+    background: rgba(20, 0, 15, 0.92);
+    border: 1px solid #e74c7d;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    padding: 40px 30px;
+    position: relative;
+    box-shadow: 0 0 60px rgba(231, 76, 125, 0.4);
+    overflow-y: auto;
+    color: #fff;
+    text-align: left;
+}
 
-        .modal-content::-webkit-scrollbar {
-            width: 8px;
-        }
-        .modal-content::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-        }
-        .modal-content::-webkit-scrollbar-thumb {
-            background: #e74c7d;
-            border-radius: 10px;
-        }
+.modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+.modal-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+.modal-content::-webkit-scrollbar-thumb {
+    background: #e74c7d;
+    border-radius: 10px;
+}
 
-        .close-btn {
-            position: sticky;
-            top: 0;
-            float: right;
-            color: #fff;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: color 0.2s;
-            background: rgba(20, 0, 15, 0.9);
-            padding: 5px 10px;
-            border-radius: 50%;
-            z-index: 10;
-        }
-        .close-btn:hover { color: #e74c7d; }
+.close-btn {
+    position: sticky;
+    top: 0;
+    float: right;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.2s;
+    background: rgba(20, 0, 15, 0.9);
+    padding: 5px 10px;
+    border-radius: 50%;
+    z-index: 10;
+}
+.close-btn:hover { color: #e74c7d; }
 
-        .modal-title {
-            font-family: 'Dancing Script', cursive;
-            color: #e74c7d;
-            font-size: 2.5rem;
-            text-align: center;
-            margin-bottom: 25px;
-            text-shadow: 0 0 10px rgba(231, 76, 125, 0.5);
-        }
+.modal-title {
+    font-family: 'Dancing Script', cursive;
+    color: #e74c7d;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 25px;
+    text-shadow: 0 0 10px rgba(231, 76, 125, 0.5);
+}
 
-        #reasons-list {
-            list-style: none;
-            font-size: 1.15rem;
-            line-height: 1.6;
-            color: #f1f1f1;
-            font-family: 'Patrick Hand', cursive;
-        }
-        #reasons-list li {
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(231, 76, 125, 0.15);
-            transition: background 0.2s;
-        }
-        #reasons-list li:hover {
-            background: rgba(231, 76, 125, 0.08);
-            padding-left: 10px;
-        }
-        #reasons-list li span {
-            color: #e74c7d;
-            font-weight: bold;
-            margin-right: 10px;
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.3rem;
-        }
+#reasons-list {
+    list-style: none;
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: #f1f1f1;
+    font-family: 'Patrick Hand', cursive;
+}
+#reasons-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(231, 76, 125, 0.15);
+    transition: background 0.2s;
+}
+#reasons-list li:hover {
+    background: rgba(231, 76, 125, 0.08);
+    padding-left: 10px;
+}
+#reasons-list li span {
+    color: #e74c7d;
+    font-weight: bold;
+    margin-right: 10px;
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.3rem;
+}
 
-        /* -------- RESPONSIVE -------- */
-        @media (max-width: 900px) {
-            .photos-left, .photos-right { display: none; }
-            #love-text { font-size: 2.5rem; }
-            .timer-number { font-size: 2.5rem; }
-            .timer-box { padding: 15px 20px; min-width: 75px; }
-            .timer-title { font-size: 2rem; }
-            .love-message p { font-size: 1.3rem; }
-            .modal-content { padding: 30px 20px; }
-            .modal-title { font-size: 2rem; }
-        }
+/* ============================================================
+   MOBILE: Photos go ABOVE and BELOW the text
+   ============================================================ */
+@media (max-width: 900px) {
+
+    /* Stack everything vertically */
+    #love-screen {
+        flex-direction: column;
+        overflow-x: hidden;
+        min-height: 100vh;
+    }
+
+    /* Photo columns become horizontal rows */
+    .photos-left, .photos-right {
+        width: 100%;
+        height: 180px;
+        flex-direction: row;
+        overflow: hidden;
+        padding: 10px 0;
+    }
+
+    /* Photos scroll horizontally on mobile */
+    .scroll-track {
+        flex-direction: row !important;
+        animation: scrollLeft var(--scroll-speed) linear infinite !important;
+        gap: 12px;
+    }
+
+    @keyframes scrollLeft {
+        0%   { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+
+    /* Make polaroids smaller on mobile */
+    .polaroid {
+        width: 120px;
+        flex-shrink: 0;
+        padding: 6px 6px 25px 6px;
+    }
+
+    .polaroid img {
+        height: 90px;
+    }
+
+    .polaroid .caption {
+        font-size: 0.7rem;
+        margin-top: 5px;
+    }
+
+    /* Center text section */
+    .center-content {
+        padding: 30px 20px;
+        order: 0; /* stays in the middle */
+    }
+
+    /* Order: top photos → text → bottom photos */
+    .photos-left  { order: -1; } /* above text */
+    .photos-right { order: 1;  } /* below text */
+
+    #love-text {
+        font-size: 2.5rem;
+    }
+
+    /* Scroll hint */
+    .scroll-hint {
+        position: relative;
+        bottom: auto;
+        left: auto;
+        transform: none;
+        margin: 15px auto;
+        animation: bounceDownMobile 1.5s ease-in-out infinite;
+        order: 2;
+    }
+
+    @keyframes bounceDownMobile {
+        0%, 100% { transform: translateY(0); }
+        50%      { transform: translateY(10px); }
+    }
+
+    /* Starry section adjustments */
+    .timer-number { font-size: 2.5rem; }
+    .timer-box { padding: 15px 20px; min-width: 70px; }
+    .timer-title { font-size: 1.8rem; gap: 8px; }
+    .timer-subtitle { font-size: 0.95rem; }
+    .love-message { margin: 0 10px; }
+    .love-message p { font-size: 1.2rem; }
+
+    /* Modal adjustments */
+    .modal-content { padding: 25px 15px; width: 95%; }
+    .modal-title { font-size: 1.8rem; }
+    #reasons-list { font-size: 1rem; }
+    #reasons-list li span { font-size: 1.1rem; }
+}
+
+/* Extra small phones */
+@media (max-width: 400px) {
+    #question-screen h1 { font-size: 2.5rem; }
+    #love-text { font-size: 2rem; }
+    .timer-number { font-size: 2rem; }
+    .timer-box { padding: 12px 15px; min-width: 60px; }
+    .timer-title { font-size: 1.5rem; }
+    .love-message p { font-size: 1.1rem; }
+
+    .polaroid { width: 100px; }
+    .polaroid img { height: 75px; }
+
+    .photos-left, .photos-right {
+        height: 150px;
+    }
+}
     </style>
 </head>
 <body>
