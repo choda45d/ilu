@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Do You Love Me?</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Patrick+Hand&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000;
+            font-family: 'Patrick Hand', cursive;
+        }
+
+        /* -------- QUESTION SCREEN -------- */
+        #question-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            gap: 40px;
+        }
+
+        #question-screen h1 {
+            color: #fff;
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            text-align: center;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #yes-btn, #no-btn {
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: 'Patrick Hand', cursive;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        #yes-btn {
+            background-color: #e74c7d;
+            color: #fff;
+            font-size: 1.2rem;
+            padding: 15px 40px;
+        }
+
+        #yes-btn:hover {
+            background-color: #ff6b9d;
+            transform: scale(1.05);
+        }
+
+        #no-btn {
+            background-color: #555;
+            color: #ccc;
+            font-size: 1.2rem;
+            padding: 15px 40px;
+        }
+
+        #no-btn:hover {
+            background-color: #666;
+        }
+
+        /* -------- LOVE SCREEN (page 1) -------- */
+        #love-screen {
+            display: none;
+            width: 100%;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            flex: 1;
+            padding: 0 20px;
+        }
+
+        #love-text {
+            font-family: 'Dancing Script', cursive;
+            color: #e74c7d;
+            font-size: 4rem;
+            text-align: center;
+            text-shadow: 0 0 20px rgba(231, 76, 125, 0.5);
+            animation: pulse 1s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to   { transform: scale(1.05); }
+        }
+
+        #language-label {
+            font-family: 'Patrick Hand', cursive;
+            color: #888;
+            font-size: 1rem;
+            margin-top: 10px;
+            z-index: 2;
+            letter-spacing: 1px;
+        }
+
+        /* scroll hint arrow */
+        .scroll-hint {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #e74c7d;
+            font-size: 0.9rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            animation: bounceDown 1.5s ease-in-out infinite;
+            z-index: 10;
+            cursor: pointer;
+        }
+
+        .scroll-hint span {
+            font-family: 'Patrick Hand', cursive;
+            letter-spacing: 1px;
+        }
+
+        .scroll-hint .arrow {
+            font-size: 1.5rem;
+        }
+
+        @keyframes bounceDown {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50%       { transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* -------- PHOTO COLUMNS -------- */
+        .photos-left, .photos-right {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 15px;
+            z-index: 1;
+            height: 100vh;
+            justify-content: flex-start;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .photos-left { width: 210px; }
+        .photos-right { width: 210px; }
+
+        .polaroid {
+            background: #fff;
+            padding: 10px 10px 35px 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            transform: rotate(var(--rotation));
+            transition: transform 0.3s ease;
+            width: 175px;
+            flex-shrink: 0;
+        }
+
+        .polaroid:hover {
+            transform: rotate(0deg) scale(1.1);
+            z-index: 10;
+        }
+
+        .polaroid img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .polaroid .caption {
+            text-align: center;
+            font-family: 'Patrick Hand', cursive;
+            font-size: 0.82rem;
+            color: #333;
+            margin-top: 8px;
+        }
+
+        .scroll-track {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            animation: scrollUp var(--scroll-speed) linear infinite;
+        }
+
+        .photos-right .scroll-track {
+            animation: scrollDown var(--scroll-speed) linear infinite;
+        }
+
+        @keyframes scrollUp {
+            0%   { transform: translateY(0); }
+            100% { transform: translateY(-50%); }
+        }
+
+        @keyframes scrollDown {
+            0%   { transform: translateY(-50%); }
+            100% { transform: translateY(0); }
+        }
+
+        /* -------- FLOATING HEARTS -------- */
+        .heart {
+            position: fixed;
+            animation: floatUp linear;
+            opacity: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes floatUp {
+            0%   { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10%  { opacity: 1; }
+            90%  { opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* ======================================
+           STARRY NIGHT SECTION
+        ====================================== */
+        #starry-section {
+            display: none;
+            position: relative;
+            min-height: 100vh;
+            width: 100%;
+            background: linear-gradient(to bottom, #000010, #0a0020, #000010);
+            overflow: hidden;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+        }
+
+        /* Stars canvas sits behind everything */
+        #stars-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        /* Fireworks canvas */
+        #fireworks-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* -------- TIMER -------- */
+        .timer-wrapper {
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+
+        .timer-title {
+            font-family: 'Dancing Script', cursive;
+            color: #fff;
+            font-size: 2.5rem;
+            text-align: center;
+            text-shadow: 0 0 20px rgba(231, 76, 125, 0.8);
+        }
+
+        .timer-subtitle {
+            font-family: 'Patrick Hand', cursive;
+            color: #e74c7d;
+            font-size: 1.1rem;
+            text-align: center;
+            opacity: 0.9;
+        }
+
+        .timer-boxes {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .timer-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(231, 76, 125, 0.3);
+            border-radius: 16px;
+            padding: 20px 30px;
+            min-width: 100px;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 0 20px rgba(231, 76, 125, 0.15);
+        }
+
+        .timer-number {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            color: #e74c7d;
+            text-shadow: 0 0 15px rgba(231, 76, 125, 0.6);
+            line-height: 1;
+        }
+
+        .timer-label {
+            font-family: 'Patrick Hand', cursive;
+            font-size: 0.85rem;
+            color: #aaa;
+            margin-top: 8px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* -------- LOVE MESSAGE -------- */
+        .love-message {
+            z-index: 2;
+            max-width: 600px;
+            text-align: center;
+            padding: 30px 40px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(231, 76, 125, 0.2);
+            border-radius: 20px;
+            backdrop-filter: blur(6px);
+            box-shadow: 0 0 40px rgba(231, 76, 125, 0.1);
+        }
+
+        .love-message p {
+            font-family: 'Dancing Script', cursive;
+            color: #fff;
+            font-size: 1.6rem;
+            line-height: 1.8;
+            text-shadow: 0 0 10px rgba(255,255,255,0.1);
+        }
+
+        .love-message .signature {
+            margin-top: 20px;
+            font-family: 'Dancing Script', cursive;
+            color: #e74c7d;
+            font-size: 1.3rem;
+        }
+
+        /* -------- RESPONSIVE -------- */
+        @media (max-width: 900px) {
+            .photos-left, .photos-right {
+                display: none;
+            }
+
+            #love-text { font-size: 2.5rem; }
+            .timer-number { font-size: 2.5rem; }
+            .timer-box { padding: 15px 20px; min-width: 75px; }
+            .timer-title { font-size: 1.8rem; }
+            .love-message p { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ========== QUESTION SCREEN ========== -->
+<div id="question-screen">
+    <h1>Do you love me? ❤️</h1>
+    <div class="buttons">
+        <button id="yes-btn" onclick="sayYes()">Yes</button>
+        <button id="no-btn" onclick="sayNo()">No</button>
+    </div>
+</div>
+
+<!-- ========== LOVE SCREEN ========== -->
+<div id="love-screen">
+
+    <!-- LEFT COLUMN -->
+    <div class="photos-left" style="--scroll-speed: 30s;">
+        <div class="scroll-track">
+            <div class="polaroid" style="--rotation: -4deg;">
+                <img src="photo1.jpeg" alt="Photo 1">
+                <div class="caption">You & Me 💕</div>
+            </div>
+            <div class="polaroid" style="--rotation: 3deg;">
+                <img src="photo2.jpeg" alt="Photo 2">
+                <div class="caption">Forever ❤️</div>
+            </div>
+            <div class="polaroid" style="--rotation: -2deg;">
+                <img src="photo3.jpeg" alt="Photo 3">
+                <div class="caption">My favorite 💖</div>
+            </div>
+            <div class="polaroid" style="--rotation: 5deg;">
+                <img src="photo4.jpeg" alt="Photo 4">
+                <div class="caption">Always 💗</div>
+            </div>
+            <div class="polaroid" style="--rotation: -3deg;">
+                <img src="photo5.jpeg" alt="Photo 5">
+                <div class="caption">My heart 💝</div>
+            </div>
+            <div class="polaroid" style="--rotation: 2deg;">
+                <img src="photo6.jpeg" alt="Photo 6">
+                <div class="caption">Us 💞</div>
+            </div>
+            <div class="polaroid" style="--rotation: -5deg;">
+                <img src="photo7.jpeg" alt="Photo 7">
+                <div class="caption">Memories 📸</div>
+            </div>
+            <div class="polaroid" style="--rotation: 4deg;">
+                <img src="photo8.jpeg" alt="Photo 8">
+                <div class="caption">Together 🌸</div>
+            </div>
+            <div class="polaroid" style="--rotation: -1deg;">
+                <img src="photo9.jpeg" alt="Photo 9">
+                <div class="caption">My world 🌍</div>
+            </div>
+            <div class="polaroid" style="--rotation: 3deg;">
+                <img src="photo10.jpeg" alt="Photo 10">
+                <div class="caption">Sunshine ☀️</div>
+            </div>
+            <!-- duplicate -->
+            <div class="polaroid" style="--rotation: -4deg;">
+                <img src="photo1.jpeg" alt="Photo 1">
+                <div class="caption">You & Me 💕</div>
+            </div>
+            <div class="polaroid" style="--rotation: 3deg;">
+                <img src="photo2.jpeg" alt="Photo 2">
+                <div class="caption">Forever ❤️</div>
+            </div>
+            <div class="polaroid" style="--rotation: -2deg;">
+                <img src="photo3.jpeg" alt="Photo 3">
+                <div class="caption">My favorite 💖</div>
+            </div>
+            <div class="polaroid" style="--rotation: 5deg;">
+                <img src="photo4.jpeg" alt="Photo 4">
+                <div class="caption">Always 💗</div>
+            </div>
+            <div class="polaroid" style="--rotation: -3deg;">
+                <img src="photo5.jpeg" alt="Photo 5">
+                <div class="caption">My heart 💝</div>
+            </div>
+            <div class="polaroid" style="--rotation: 2deg;">
+                <img src="photo6.jpeg" alt="Photo 6">
+                <div class="caption">Us 💞</div>
+            </div>
+            <div class="polaroid" style="--rotation: -5deg;">
+                <img src="photo7.jpeg" alt="Photo 7">
+                <div class="caption">Memories 📸</div>
+            </div>
+            <div class="polaroid" style="--rotation: 4deg;">
+                <img src="photo8.jpeg" alt="Photo 8">
+                <div class="caption">Together 🌸</div>
+            </div>
+            <div class="polaroid" style="--rotation: -1deg;">
+                <img src="photo9.jpeg" alt="Photo 9">
+                <div class="caption">My world 🌍</div>
+            </div>
+            <div class="polaroid" style="--rotation: 3deg;">
+                <img src="photo10.jpeg" alt="Photo 10">
+                <div class="caption">Sunshine ☀️</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CENTER -->
+    <div class="center-content">
+        <h1 id="love-text">I Love You</h1>
+        <p id="language-label">English 🇬🇧</p>
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="photos-right" style="--scroll-speed: 35s;">
+        <div class="scroll-track">
+            <div class="polaroid" style="--rotation: 4deg;">
+                <img src="photo11.jpeg" alt="Photo 11">
+                <div class="caption">Magical ✨</div>
+            </div>
+            <div class="polaroid" style="--rotation: -3deg;">
+                <img src="photo12.jpeg" alt="Photo 12">
+                <div class="caption">Bliss 🌺</div>
+            </div>
+            <div class="polaroid" style="--rotation: 2deg;">
+                <img src="photo13.jpeg" alt="Photo 13">
+                <div class="caption">Our story 📖</div>
+            </div>
+            <div class="polaroid" style="--rotation: -5deg;">
+                <img src="photo14.jpeg" alt="Photo 14">
+                <div class="caption">Laughter 😄</div>
+            </div>
+            <div class="polaroid" style="--rotation: 3deg;">
+                <img src="photo15.jpeg" alt="Photo 15">
+                <div class="caption">Adventure 🌟</div>
+            </div>
+            <div class="polaroid" style="--rotation: -2deg;">
+                <img src="photo16.jpeg" alt="Photo 16">
+                <div class="caption">Dreaming 🌙</div>
+            </div>
+            <div class="polaroid" style="--rotation: 5deg;">
+                <img src="photo17.jpeg" alt="Photo 17">
+                <div class="caption">Home 🏡</div>
+            </div>
+            <div class="polaroid" style="--rotation: -4deg;">
+                <img src="photo18.jpeg" alt="Photo 18">
+                <div class="caption">Joy 🎉</div>
+            </div>
+            <div class="polaroid" style="--rotation: 1deg;">
+                <img src="photo19.jpeg" alt="Photo 19">
+                <div class="caption">Eternity 💫</div>
+            </div>
+            <!-- duplicate -->
+            <div class="polaroid" style="--rotation: 4deg;">
+                <img src="photo11.jpeg" alt="Photo 11">
+                <div class="caption">Magical ✨</div>
+            </div>
+            <div class="polaroid" style="--rotation: -3deg;">
+                <img src="photo12.jpeg" alt="Photo 12">
+                <div class="caption">Bliss 🌺</div>
+            </div>
+            <div class="polaroid" style="--rotation: 2deg;">
+                <img src="photo13.jpeg" alt="Photo 13">
+                <div class="caption">Our story 📖</div>
+            </div>
+            <div class="polaroid" style="--rotation: -5deg;">
+                <img src="photo14.jpeg" alt="Photo 14">
+                <div class="caption">Laughter 😄</div>
+            </div>
+            <div class="polaroid" style="--rotation: 3deg;">
+                <img src="photo15.jpeg" alt="Photo 15">
+                <div class="caption">Adventure 🌟</div>
+            </div>
+            <div class="polaroid" style="--rotation: -2deg;">
+                <img src="photo16.jpeg" alt="Photo 16">
+                <div class="caption">Dreaming 🌙</div>
+            </div>
+            <div class="polaroid" style="--rotation: 5deg;">
+                <img src="photo17.jpeg" alt="Photo 17">
+                <div class="caption">Home 🏡</div>
+            </div>
+            <div class="polaroid" style="--rotation: -4deg;">
+                <img src="photo18.jpeg" alt="Photo 18">
+                <div class="caption">Joy 🎉</div>
+            </div>
+            <div class="polaroid" style="--rotation: 1deg;">
+                <img src="photo19.jpeg" alt="Photo 19">
+                <div class="caption">Eternity 💫</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCROLL HINT -->
+    <div class="scroll-hint" onclick="scrollToStars()">
+        <span>scroll down</span>
+        <div class="arrow">↓</div>
+    </div>
+
+</div>
+
+<!-- ========== STARRY NIGHT SECTION ========== -->
+<div id="starry-section">
+    <canvas id="stars-canvas"></canvas>
+    <canvas id="fireworks-canvas"></canvas>
+
+    <!-- TIMER -->
+    <div class="timer-wrapper">
+        <div class="timer-title">💖 Together Since 💖</div>
+        <div class="timer-subtitle">20 March 2025 · 00:00:00</div>
+        <div class="timer-boxes">
+            <div class="timer-box">
+                <div class="timer-number" id="t-days">0</div>
+                <div class="timer-label">Days</div>
+            </div>
+            <div class="timer-box">
+                <div class="timer-number" id="t-hours">0</div>
+                <div class="timer-label">Hours</div>
+            </div>
+            <div class="timer-box">
+                <div class="timer-number" id="t-minutes">0</div>
+                <div class="timer-label">Minutes</div>
+            </div>
+            <div class="timer-box">
+                <div class="timer-number" id="t-seconds">0</div>
+                <div class="timer-label">Seconds</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOVE MESSAGE -->
+    <!-- ✏️ Edit this message to whatever you want to say! -->
+    <div class="love-message">
+        <p>
+            Every second with you feels like magic.<br>
+            Every minute makes me fall deeper.<br>
+            Every hour reminds me how lucky I am.<br>
+            Every day I choose you, all over again.
+        </p>
+        <div class="signature">— Forever yours ❤️</div>
+    </div>
+
+</div>
+
+<script>
+    // ============================================================
+    // LOVE PHRASES
+    // ============================================================
+    const lovePhrases = [
+        { text: "I Love You",                   lang: "English 🇬🇧" },
+        { text: "Te Amo",                        lang: "Spanish 🇪🇸" },
+        { text: "Je t'aime",                     lang: "French 🇫🇷" },
+        { text: "Ich liebe dich",                lang: "German 🇩🇪" },
+        { text: "Ti amo",                        lang: "Italian 🇮🇹" },
+        { text: "Eu te amo",                     lang: "Portuguese 🇧🇷" },
+        { text: "Ik hou van je",                 lang: "Dutch 🇳🇱" },
+        { text: "Jag älskar dig",                lang: "Swedish 🇸🇪" },
+        { text: "Jeg elsker deg",                lang: "Norwegian 🇳🇴" },
+        { text: "Jeg elsker dig",                lang: "Danish 🇩🇰" },
+        { text: "Minä rakastan sinua",           lang: "Finnish 🇫🇮" },
+        { text: "Kocham cię",                    lang: "Polish 🇵🇱" },
+        { text: "Miluji tě",                     lang: "Czech 🇨🇿" },
+        { text: "Szeretlek",                     lang: "Hungarian 🇭🇺" },
+        { text: "Te iubesc",                     lang: "Romanian 🇷🇴" },
+        { text: "Volim te",                      lang: "Croatian 🇭🇷" },
+        { text: "Ljubim te",                     lang: "Serbian 🇷🇸" },
+        { text: "Обичам те",                     lang: "Bulgarian 🇧🇬" },
+        { text: "Σ'αγαπώ",                       lang: "Greek 🇬🇷" },
+        { text: "Тебе кохаю",                    lang: "Ukrainian 🇺🇦" },
+        { text: "Я тебя люблю",                  lang: "Russian 🇷🇺" },
+        { text: "Я цябе кахаю",                  lang: "Belarusian 🇧🇾" },
+        { text: "Es tevi mīlu",                  lang: "Latvian 🇱🇻" },
+        { text: "Aš tave myliu",                 lang: "Lithuanian 🇱🇹" },
+        { text: "Ma armastan sind",              lang: "Estonian 🇪🇪" },
+        { text: "Unë të dua",                    lang: "Albanian 🇦🇱" },
+        { text: "Те сакам",                      lang: "Macedonian 🇲🇰" },
+        { text: "Ljubim te",                     lang: "Slovenian 🇸🇮" },
+        { text: "Milujem ťa",                    lang: "Slovak 🇸🇰" },
+        { text: "Rwy'n dy garu di",              lang: "Welsh 🏴󠁧󠁢󠁷󠁬󠁳󠁿" },
+        { text: "Tá grá agam ort",               lang: "Irish 🇮🇪" },
+        { text: "Tha gaol agam ort",             lang: "Scottish Gaelic 🏴󠁧󠁢󠁳󠁣󠁴󠁿" },
+        { text: "Maite zaitut",                  lang: "Basque 🇪🇸" },
+        { text: "T'estimo",                      lang: "Catalan 🇪🇸" },
+        { text: "Eg elska þig",                  lang: "Icelandic 🇮🇸" },
+        { text: "მიყვარხარ",                     lang: "Georgian 🇬🇪" },
+        { text: "Քեզ սիրում եմ",                 lang: "Armenian 🇦🇲" },
+        { text: "Mən səni sevirəm",              lang: "Azerbaijani 🇦🇿" },
+        { text: "أحبك",                          lang: "Arabic 🇸🇦" },
+        { text: "אני אוהב אותך",                 lang: "Hebrew 🇮🇱" },
+        { text: "دوستت دارم",                    lang: "Persian 🇮🇷" },
+        { text: "Ez te hezdikêm",                lang: "Kurdish 🇮🇶" },
+        { text: "Seni seviyorum",                lang: "Turkish 🇹🇷" },
+        { text: "मैं तुमसे प्यार करता हूँ",      lang: "Hindi 🇮🇳" },
+        { text: "آپ سے محبت ہے",                 lang: "Urdu 🇵🇰" },
+        { text: "আমি তোমাকে ভালোবাসি",           lang: "Bengali 🇧🇩" },
+        { text: "நான் உன்னை காதலிக்கிறேன்",      lang: "Tamil 🇮🇳" },
+        { text: "నేను నిన్ను ప్రేమిస్తున్నాను",   lang: "Telugu 🇮🇳" },
+        { text: "ನಾನು ನಿನ್ನನ್ನು ಪ್ರೀತಿಸುತ್ತೇನೆ", lang: "Kannada 🇮🇳" },
+        { text: "ഞാൻ നിന്നെ സ്നേഹിക്കുന്നു",    lang: "Malayalam 🇮🇳" },
+        { text: "હું તને પ્રેમ કરું છું",          lang: "Gujarati 🇮🇳" },
+        { text: "ਮੈਂ ਤੁਹਾਨੂੰ ਪਿਆਰ ਕਰਦਾ ਹਾਂ",     lang: "Punjabi 🇮🇳" },
+        { text: "म तिमीलाई माया गर्छु",           lang: "Nepali 🇳🇵" },
+        { text: "Мен сені сүйемін",              lang: "Kazakh 🇰🇿" },
+        { text: "Мен сени яхши кўраман",         lang: "Uzbek 🇺🇿" },
+        { text: "Мен сени жакшы көрөм",          lang: "Kyrgyz 🇰🇬" },
+        { text: "Men seni söýýärin",             lang: "Turkmen 🇹🇲" },
+        { text: "愛してる",                       lang: "Japanese 🇯🇵" },
+        { text: "我爱你",                         lang: "Chinese Mandarin 🇨🇳" },
+        { text: "我愛你",                         lang: "Chinese Traditional 🇹🇼" },
+        { text: "我係愛你㗎",                     lang: "Cantonese 🇭🇰" },
+        { text: "사랑해요",                        lang: "Korean 🇰🇷" },
+        { text: "Би чамд хайртай",               lang: "Mongolian 🇲🇳" },
+        { text: "Mahal kita",                    lang: "Filipino 🇵🇭" },
+        { text: "Aku cinta kamu",                lang: "Indonesian 🇮🇩" },
+        { text: "Saya cinta awak",               lang: "Malay 🇲🇾" },
+        { text: "ฉันรักคุณ",                      lang: "Thai 🇹🇭" },
+        { text: "Anh yêu em",                    lang: "Vietnamese 🇻🇳" },
+        { text: "ຂ້ອຍຮັກເຈົ້າ",                  lang: "Lao 🇱🇦" },
+        { text: "ငါ မင်းကို ချစ်တယ်",             lang: "Burmese 🇲🇲" },
+        { text: "ខ្ញុំស្រឡាញ់អ្នក",               lang: "Khmer 🇰🇭" },
+        { text: "Ndiyakuthanda",                 lang: "Zulu 🇿🇦" },
+        { text: "Nakupenda",                     lang: "Swahili 🇰🇪" },
+        { text: "Mo nifẹ rẹ",                    lang: "Yoruba 🇳🇬" },
+        { text: "A hụrụ m gị n'anya",           lang: "Igbo 🇳🇬" },
+        { text: "Ina son ki",                    lang: "Hausa 🇳🇬" },
+        { text: "Ke a go rata",                  lang: "Tswana 🇧🇼" },
+        { text: "Ndinokuda",                     lang: "Shona 🇿🇼" },
+        { text: "Waan ku jecelahay",             lang: "Somali 🇸🇴" },
+        { text: "Micumine wena",                 lang: "Xhosa 🇿🇦" },
+        { text: "Aroha au ia koe",               lang: "Maori 🇳🇿" },
+        { text: "Au fiafia ia te oe",            lang: "Samoan 🇼🇸" },
+        { text: "Aloha au iā ʻoe",               lang: "Hawaiian 🌺" },
+        { text: "Au kata rogo tiko",             lang: "Fijian 🇫🇯" },
+        { text: "Asavakit",                      lang: "Inuktitut ❄️" },
+        { text: "Yeh-hi-lo",                     lang: "Cherokee 🪶" },
+    ];
+
+    let noCount    = 0;
+    let phraseIndex = 0;
+    let yesFontSize = 1.2;
+    let yesPadding  = 15;
+    let noFontSize  = 1.2;
+    let noPadding   = 15;
+
+    // ============================================================
+    // NO BUTTON
+    // ============================================================
+    function sayNo() {
+        noCount++;
+        yesFontSize += 0.5;
+        yesPadding  += 10;
+        document.getElementById('yes-btn').style.fontSize = yesFontSize + 'rem';
+        document.getElementById('yes-btn').style.padding  = yesPadding + 'px ' + (yesPadding + 25) + 'px';
+
+        noFontSize = Math.max(0.3, noFontSize - 0.2);
+        noPadding  = Math.max(2,   noPadding  - 3);
+        document.getElementById('no-btn').style.fontSize = noFontSize + 'rem';
+        document.getElementById('no-btn').style.padding  = noPadding + 'px ' + (noPadding + 5) + 'px';
+
+        if (noCount >= 5) document.getElementById('no-btn').style.display = 'none';
+    }
+
+    // ============================================================
+    // YES BUTTON
+    // ============================================================
+    function sayYes() {
+        document.getElementById('question-screen').style.display = 'none';
+        const ls = document.getElementById('love-screen');
+        ls.style.display = 'flex';
+
+        // show starry section too so user can scroll to it
+        document.getElementById('starry-section').style.display = 'flex';
+
+        // cycle phrases
+        setInterval(() => {
+            const cur = lovePhrases[phraseIndex];
+            document.getElementById('love-text').textContent    = cur.text;
+            document.getElementById('language-label').textContent = cur.lang;
+            phraseIndex = (phraseIndex + 1) % lovePhrases.length;
+        }, 500);
+
+        startHearts();
+        startTimer();
+        initStars();
+        initFireworks();
+    }
+
+    // ============================================================
+    // SCROLL TO STARS
+    // ============================================================
+    function scrollToStars() {
+        document.getElementById('starry-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // ============================================================
+    // FLOATING HEARTS
+    // ============================================================
+    function startHearts() {
+        const emojis = ['❤️','💕','💖','💗','💝','💞','💘','🩷','♥️'];
+        setInterval(() => {
+            const h = document.createElement('div');
+            h.classList.add('heart');
+            h.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            h.style.left   = Math.random() * 100 + 'vw';
+            h.style.top    = '100vh';
+            h.style.fontSize = (Math.random() * 1.5 + 0.8) + 'rem';
+            const dur = (Math.random() * 4 + 4);
+            h.style.animationDuration = dur + 's';
+            document.getElementById('love-screen').appendChild(h);
+            setTimeout(() => h.remove(), dur * 1000);
+        }, 300);
+    }
+
+    // ============================================================
+    // TIMER  — counting up from 20 March 2025 00:00:00
+    // ============================================================
+    function startTimer() {
+        const start = new Date('2025-03-20T00:00:00');
+
+        function update() {
+            const now  = new Date();
+            const diff = now - start;          // milliseconds
+
+            if (diff < 0) {
+                // future-proof: if somehow run before the date
+                document.getElementById('t-days').textContent    = '0';
+                document.getElementById('t-hours').textContent   = '0';
+                document.getElementById('t-minutes').textContent = '0';
+                document.getElementById('t-seconds').textContent = '0';
+                return;
+            }
+
+            const days    = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours   = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('t-days').textContent    = days;
+            document.getElementById('t-hours').textContent   = String(hours).padStart(2,'0');
+            document.getElementById('t-minutes').textContent = String(minutes).padStart(2,'0');
+            document.getElementById('t-seconds').textContent = String(seconds).padStart(2,'0');
+        }
+
+        update();
+        setInterval(update, 1000);
+    }
+
+    // ============================================================
+    // STARS
+    // ============================================================
+    function initStars() {
+        const canvas = document.getElementById('stars-canvas');
+        const ctx    = canvas.getContext('2d');
+
+        function resize() {
+            canvas.width  = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            drawStars();
+        }
+
+        const stars = [];
+        function drawStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.length = 0;
+            const count = Math.floor((canvas.width * canvas.height) / 3000);
+            for (let i = 0; i < count; i++) {
+                stars.push({
+                    x:       Math.random() * canvas.width,
+                    y:       Math.random() * canvas.height,
+                    r:       Math.random() * 1.5 + 0.3,
+                    alpha:   Math.random(),
+                    speed:   Math.random() * 0.02 + 0.005,
+                    growing: Math.random() > 0.5,
+                });
+            }
+        }
+
+        function animateStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(s => {
+                // twinkle
+                if (s.growing) { s.alpha += s.speed; if (s.alpha >= 1) s.growing = false; }
+                else            { s.alpha -= s.speed; if (s.alpha <= 0.1) s.growing = true; }
+
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255,255,255,${s.alpha})`;
+                ctx.fill();
+            });
+            requestAnimationFrame(animateStars);
+        }
+
+        resize();
+        window.addEventListener('resize', resize);
+        animateStars();
+    }
+
+    // ============================================================
+    // FIREWORKS
+    // ============================================================
+    function initFireworks() {
+        const canvas = document.getElementById('fireworks-canvas');
+        const ctx    = canvas.getContext('2d');
+
+        function resize() {
+            canvas.width  = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        const particles = [];
+
+        const colors = [
+            '#e74c7d','#ff6b9d','#ff9ff3','#ffd32a',
+            '#fff200','#00d2d3','#54a0ff','#ff6b6b',
+            '#ff9f43','#c44569','#f8a5c2','#ffeaa7',
+        ];
+
+        function launchFirework() {
+            const x = Math.random() * canvas.width;
+            const y = Math.random() * canvas.height * 0.6 + 50;
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const count = Math.floor(Math.random() * 60) + 60;
+
+            for (let i = 0; i < count; i++) {
+                const angle  = (Math.PI * 2 / count) * i;
+                const speed  = Math.random() * 4 + 1.5;
+                const size   = Math.random() * 3 + 1;
+                particles.push({
+                    x, y,
+                    vx:      Math.cos(angle) * speed,
+                    vy:      Math.sin(angle) * speed,
+                    alpha:   1,
+                    color,
+                    size,
+                    decay:   Math.random() * 0.015 + 0.008,
+                    gravity: 0.06,
+                });
+            }
+        }
+
+        function animateFireworks() {
+            ctx.fillStyle = 'rgba(0,0,0,0.15)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.x     += p.vx;
+                p.y     += p.vy;
+                p.vy    += p.gravity;
+                p.vx    *= 0.98;
+                p.alpha -= p.decay;
+
+                if (p.alpha <= 0) { particles.splice(i, 1); continue; }
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = p.color.replace(')', `,${p.alpha})`).replace('rgb','rgba');
+
+                // handle hex colors
+                ctx.globalAlpha = p.alpha;
+                ctx.fillStyle   = p.color;
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            }
+
+            requestAnimationFrame(animateFireworks);
+        }
+
+        animateFireworks();
+
+        // launch a firework every 2–5 seconds
+        function scheduleFirework() {
+            launchFirework();
+            // sometimes double launch for extra wow
+            if (Math.random() > 0.5) {
+                setTimeout(launchFirework, 300);
+            }
+            setTimeout(scheduleFirework, Math.random() * 3000 + 2000);
+        }
+        scheduleFirework();
+    }
+</script>
+</body>
+</html>
