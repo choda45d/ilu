@@ -591,6 +591,413 @@ body {
         height: 150px;
     }
 }
+        /* ======================================
+   KOVERTA SEKCIJA
+====================================== */
+#envelope-section {
+    display: none;
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    background: linear-gradient(to bottom, #000010, #080018, #000010);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    overflow: hidden;
+}
+
+#stars-canvas-2, #stars-canvas-3 {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.section-title {
+    font-family: 'Dancing Script', cursive;
+    color: #fff;
+    font-size: 2.5rem;
+    text-align: center;
+    text-shadow: 0 0 20px rgba(231, 76, 125, 0.8);
+    z-index: 2;
+    margin-bottom: 40px;
+}
+
+/* -------- KOVERTA -------- */
+.envelope-wrapper {
+    z-index: 2;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.envelope {
+    position: relative;
+    width: 320px;
+    height: 200px;
+    transition: transform 0.3s;
+}
+
+.envelope:hover {
+    transform: scale(1.03);
+}
+
+.envelope-body {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 160px;
+    background: linear-gradient(135deg, #e74c7d, #c44569);
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 8px 30px rgba(231, 76, 125, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+.envelope-heart {
+    font-size: 3rem;
+    animation: pulse-heart 1.5s infinite alternate;
+}
+
+.envelope-flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: linear-gradient(135deg, #ff6b9d, #e74c7d);
+    clip-path: polygon(0 0, 50% 100%, 100% 0);
+    z-index: 3;
+    transform-origin: top center;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.envelope-flap.open {
+    transform: rotateX(180deg);
+    z-index: 1;
+}
+
+/* -------- PISMO -------- */
+.letter {
+    position: absolute;
+    width: 280px;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 20px;
+    background: #fff;
+    border-radius: 8px;
+    z-index: 1;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 1s cubic-bezier(0.4, 0, 0.2, 1) 0.5s,
+                box-shadow 0.5s ease 0.5s;
+    box-shadow: none;
+}
+
+.letter.open {
+    max-height: 500px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+
+.letter-content {
+    padding: 30px 25px;
+}
+
+.letter-greeting {
+    font-family: 'Dancing Script', cursive;
+    color: #e74c7d;
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+}
+
+.letter-text {
+    font-family: 'Patrick Hand', cursive;
+    color: #333;
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 20px;
+}
+
+.letter-signature {
+    font-family: 'Dancing Script', cursive;
+    color: #e74c7d;
+    font-size: 1.3rem;
+    text-align: right;
+}
+
+.envelope-hint {
+    font-family: 'Patrick Hand', cursive;
+    color: #e74c7d;
+    font-size: 0.9rem;
+    animation: bounceDown 1.5s infinite;
+    opacity: 0.8;
+}
+
+.envelope-hint.hidden {
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+/* ======================================
+   LOKACIJE SEKCIJA
+====================================== */
+#locations-section {
+    display: none;
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    background: linear-gradient(to bottom, #000010, #0a0020, #000010);
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 20px 80px;
+    overflow: hidden;
+}
+
+.locations-wrapper {
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    max-width: 550px;
+    width: 100%;
+}
+
+/* -------- LOKACIONA KARTICA -------- */
+.location-card {
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(231, 76, 125, 0.25);
+    border-radius: 20px;
+    padding: 30px 25px;
+    width: 100%;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 0 30px rgba(231, 76, 125, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.location-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 50px rgba(231, 76, 125, 0.25);
+}
+
+.location-pin {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    animation: bounce-pin 2s infinite;
+}
+
+@keyframes bounce-pin {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-8px); }
+}
+
+.location-info {
+    margin-bottom: 20px;
+}
+
+.location-name {
+    font-family: 'Dancing Script', cursive;
+    color: #e74c7d;
+    font-size: 2rem;
+    margin-bottom: 5px;
+    text-shadow: 0 0 10px rgba(231, 76, 125, 0.4);
+}
+
+.location-date {
+    font-family: 'Patrick Hand', cursive;
+    color: #aaa;
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+}
+
+.location-desc {
+    font-family: 'Patrick Hand', cursive;
+    color: #ddd;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.location-coords {
+    margin-top: 10px;
+    padding: 6px 14px;
+    background: rgba(231, 76, 125, 0.1);
+    border: 1px solid rgba(231, 76, 125, 0.2);
+    border-radius: 20px;
+    display: inline-block;
+}
+
+.location-coords span {
+    font-family: 'Patrick Hand', cursive;
+    color: #e74c7d;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+}
+
+/* -------- MAPA -------- */
+.location-map-container {
+    margin: 20px 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid rgba(231, 76, 125, 0.3);
+    box-shadow: 0 0 20px rgba(231, 76, 125, 0.15);
+}
+
+.location-map {
+    width: 100%;
+    height: 200px;
+    border: none;
+    filter: grayscale(30%) brightness(0.85);
+    transition: filter 0.3s;
+}
+
+.location-map:hover {
+    filter: grayscale(0%) brightness(1);
+}
+
+/* -------- SEĆANJE -------- */
+.location-memory {
+    margin-top: 15px;
+    padding: 15px 18px;
+    background: rgba(231, 76, 125, 0.06);
+    border-left: 3px solid #e74c7d;
+    border-radius: 0 10px 10px 0;
+}
+
+.memory-label {
+    font-family: 'Dancing Script', cursive;
+    color: #e74c7d;
+    font-size: 1.1rem;
+}
+
+.location-memory p {
+    font-family: 'Patrick Hand', cursive;
+    color: #ccc;
+    font-size: 1rem;
+    font-style: italic;
+    margin-top: 5px;
+    line-height: 1.5;
+}
+
+/* -------- KONEKTOR IZMEĐU LOKACIJA -------- */
+.location-connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    z-index: 2;
+    padding: 10px 0;
+}
+
+.connector-line {
+    width: 2px;
+    height: 30px;
+    background: linear-gradient(to bottom, transparent, #e74c7d, transparent);
+}
+
+.connector-heart {
+    font-size: 1.2rem;
+    animation: pulse-heart 1.5s infinite alternate;
+}
+
+/* -------- FOOTER LOKACIJA -------- */
+.locations-footer {
+    z-index: 2;
+    margin-top: 50px;
+    text-align: center;
+    padding: 25px 30px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(231, 76, 125, 0.15);
+    border-radius: 15px;
+    max-width: 500px;
+}
+
+.locations-footer p {
+    font-family: 'Dancing Script', cursive;
+    color: #fff;
+    font-size: 1.3rem;
+    line-height: 1.7;
+    text-shadow: 0 0 10px rgba(255,255,255,0.1);
+}
+
+/* -------- SCROLL HINT SECTION -------- */
+.section-scroll-hint {
+    z-index: 2;
+    margin-top: 30px;
+    color: #e74c7d;
+    font-family: 'Patrick Hand', cursive;
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    animation: bounceDown 1.5s infinite;
+}
+
+/* -------- MOBILE RESPONSIVE -------- */
+@media (max-width: 900px) {
+    .envelope {
+        width: 260px;
+        height: 170px;
+    }
+
+    .envelope-body {
+        height: 130px;
+    }
+
+    .envelope-flap {
+        height: 85px;
+    }
+
+    .letter {
+        width: 230px;
+    }
+
+    .letter-content {
+        padding: 20px 18px;
+    }
+
+    .letter-greeting { font-size: 1.3rem; }
+    .letter-text { font-size: 0.9rem; }
+    .letter-signature { font-size: 1.1rem; }
+
+    .section-title { font-size: 2rem; }
+    .location-name { font-size: 1.6rem; }
+    .location-card { padding: 20px 18px; }
+    .location-map { height: 160px; }
+    .locations-footer p { font-size: 1.1rem; }
+}
+
+@media (max-width: 400px) {
+    .envelope {
+        width: 220px;
+        height: 150px;
+    }
+
+    .envelope-body {
+        height: 115px;
+    }
+
+    .envelope-flap {
+        height: 75px;
+    }
+
+    .letter {
+        width: 195px;
+    }
+
+    .section-title { font-size: 1.6rem; }
+    .location-name { font-size: 1.4rem; }
+    .locations-footer p { font-size: 1rem; }
+}
     </style>
 </head>
 <body>
@@ -831,7 +1238,121 @@ body {
         <div class="signature">— Zauvek tvoj ❤️</div>
     </div>
 </div>
+<!-- ========== KOVERTA SEKCIJA ========== -->
+<div id="envelope-section">
+    <canvas id="stars-canvas-2"></canvas>
 
+    <h2 class="section-title">💌 Imam nešto za tebe...</h2>
+
+    <div class="envelope-wrapper" onclick="openEnvelope()">
+        <div class="envelope" id="envelope">
+            <!-- Poklopac koverte -->
+            <div class="envelope-flap" id="envelope-flap"></div>
+            <!-- Telo koverte -->
+            <div class="envelope-body">
+                <div class="envelope-heart">💌</div>
+            </div>
+            <!-- Pismo koje izlazi -->
+            <div class="letter" id="letter">
+                <div class="letter-content">
+                    <p class="letter-greeting">Draga moja,</p>
+                    <p class="letter-text">
+                        Od prvog trenutka kada sam te video u La Bohème,
+                        znao sam da si ti ona koja će mi promeniti život.<br><br>
+                        Tvoj osmeh te večeri je zauvek ostao u mom srcu.
+                        Svaki dan sa tobom je dar koji nikad neću uzeti zdravo za gotovo.<br><br>
+                        Volim te više nego što reči mogu da opišu,
+                        više nego juče, a manje nego sutra.<br><br>
+                        Ti si moj dom, moj mir, moja sreća.
+                        Hvala ti što postojiš.
+                    </p>
+                    <p class="letter-signature">Zauvek tvoj ❤️</p>
+                </div>
+            </div>
+        </div>
+        <p class="envelope-hint" id="envelope-hint">klikni na kovertu ✨</p>
+    </div>
+</div>
+
+<!-- ========== MAPA LOKACIJA SEKCIJA ========== -->
+<div id="locations-section">
+    <canvas id="stars-canvas-3"></canvas>
+
+    <h2 class="section-title">📍 Naša mesta</h2>
+
+    <div class="locations-wrapper">
+
+        <!-- LOKACIJA 1: La Bohème -->
+        <div class="location-card">
+            <div class="location-pin">📍</div>
+            <div class="location-info">
+                <h3 class="location-name">La Bohème</h3>
+                <p class="location-date">14. januar 2025.</p>
+                <p class="location-desc">
+                    Mesto gde je sve počelo.<br>
+                    Gde sam te prvi put video.<br>
+                    Gde je bio naš prvi poljubac. 💋
+                </p>
+                <div class="location-coords">
+                    <span>44.9664° N, 19.6065° E</span>
+                </div>
+            </div>
+            <div class="location-map-container">
+                <iframe
+                    class="location-map"
+                    src="https://www.openstreetmap.org/export/embed.html?bbox=19.603%2C44.964%2C19.610%2C44.969&layer=mapnik&marker=44.96642504695114%2C19.606536860655805"
+                    loading="lazy">
+                </iframe>
+            </div>
+            <div class="location-memory">
+                <span class="memory-label">💭 Sećanje:</span>
+                <p>"La Bohème — gde se magija desila, gde je tvoj osmeh zauvek promenio moj svet."</p>
+            </div>
+        </div>
+
+        <!-- Povezna linija -->
+        <div class="location-connector">
+            <div class="connector-line"></div>
+            <div class="connector-heart">❤️</div>
+            <div class="connector-line"></div>
+        </div>
+
+        <!-- LOKACIJA 2: Naša klupica -->
+        <div class="location-card">
+            <div class="location-pin">📍</div>
+            <div class="location-info">
+                <h3 class="location-name">Naša klupica</h3>
+                <p class="location-date">Naše posebno mesto</p>
+                <p class="location-desc">
+                    Mesto gde razgovaramo satima.<br>
+                    Gde delimo tajne i snove.<br>
+                    Naš mali raj na zemlji. 🌙
+                </p>
+                <div class="location-coords">
+                    <span>44.9766° N, 19.6123° E</span>
+                </div>
+            </div>
+            <div class="location-map-container">
+                <iframe
+                    class="location-map"
+                    src="https://www.openstreetmap.org/export/embed.html?bbox=19.609%2C44.974%2C19.616%2C44.979&layer=mapnik&marker=44.976560%2C19.612324"
+                    loading="lazy">
+                </iframe>
+            </div>
+            <div class="location-memory">
+                <span class="memory-label">💭 Sećanje:</span>
+                <p>"Naša klupica — gde vreme staje i gde je ceo svet samo nas dvoje."</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Poruka na dnu -->
+    <div class="locations-footer">
+        <p>Ovo su koordinate mojih omiljenih mesta na svetu.<br>
+        Jer svako mesto sa tobom postaje omiljeno. 💖</p>
+    </div>
+</div>
 <!-- ========== 200 REASONS MODAL ========== -->
 <div id="reasons-modal">
     <div class="modal-content">
