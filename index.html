@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Do You Love Me?</title>
+    <title>Da li me voliš?</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Patrick+Hand&display=swap');
 
@@ -31,7 +31,7 @@
         #question-screen h1 {
             color: #fff;
             font-family: 'Dancing Script', cursive;
-            font-size: 3rem;
+            font-size: 3.5rem;
             text-align: center;
         }
 
@@ -248,23 +248,15 @@
             padding: 60px 20px;
         }
 
-        /* Stars canvas sits behind everything */
         #stars-canvas {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             z-index: 0;
         }
 
-        /* Fireworks canvas */
         #fireworks-canvas {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             z-index: 1;
             pointer-events: none;
         }
@@ -282,9 +274,47 @@
         .timer-title {
             font-family: 'Dancing Script', cursive;
             color: #fff;
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             text-align: center;
             text-shadow: 0 0 20px rgba(231, 76, 125, 0.8);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .clickable-heart {
+            cursor: pointer;
+            transition: transform 0.2s;
+            animation: pulse-heart 1.5s infinite alternate;
+            display: inline-block;
+            position: relative;
+        }
+        .clickable-heart:hover {
+            transform: scale(1.3);
+            text-shadow: 0 0 30px #fff;
+        }
+
+        .clickable-heart .tooltip {
+            position: absolute;
+            bottom: -28px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Patrick Hand', cursive;
+            font-size: 0.7rem;
+            color: #e74c7d;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .clickable-heart:hover .tooltip {
+            opacity: 1;
+        }
+
+        @keyframes pulse-heart {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.15); }
         }
 
         .timer-subtitle {
@@ -360,17 +390,105 @@
             font-size: 1.3rem;
         }
 
+        /* -------- REASONS MODAL -------- */
+        #reasons-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-content {
+            background: rgba(20, 0, 15, 0.92);
+            border: 1px solid #e74c7d;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            padding: 40px 30px;
+            position: relative;
+            box-shadow: 0 0 60px rgba(231, 76, 125, 0.4);
+            overflow-y: auto;
+            color: #fff;
+            text-align: left;
+        }
+
+        .modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        .modal-content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+        .modal-content::-webkit-scrollbar-thumb {
+            background: #e74c7d;
+            border-radius: 10px;
+        }
+
+        .close-btn {
+            position: sticky;
+            top: 0;
+            float: right;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s;
+            background: rgba(20, 0, 15, 0.9);
+            padding: 5px 10px;
+            border-radius: 50%;
+            z-index: 10;
+        }
+        .close-btn:hover { color: #e74c7d; }
+
+        .modal-title {
+            font-family: 'Dancing Script', cursive;
+            color: #e74c7d;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 25px;
+            text-shadow: 0 0 10px rgba(231, 76, 125, 0.5);
+        }
+
+        #reasons-list {
+            list-style: none;
+            font-size: 1.15rem;
+            line-height: 1.6;
+            color: #f1f1f1;
+            font-family: 'Patrick Hand', cursive;
+        }
+        #reasons-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(231, 76, 125, 0.15);
+            transition: background 0.2s;
+        }
+        #reasons-list li:hover {
+            background: rgba(231, 76, 125, 0.08);
+            padding-left: 10px;
+        }
+        #reasons-list li span {
+            color: #e74c7d;
+            font-weight: bold;
+            margin-right: 10px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.3rem;
+        }
+
         /* -------- RESPONSIVE -------- */
         @media (max-width: 900px) {
-            .photos-left, .photos-right {
-                display: none;
-            }
-
+            .photos-left, .photos-right { display: none; }
             #love-text { font-size: 2.5rem; }
             .timer-number { font-size: 2.5rem; }
             .timer-box { padding: 15px 20px; min-width: 75px; }
-            .timer-title { font-size: 1.8rem; }
+            .timer-title { font-size: 2rem; }
             .love-message p { font-size: 1.3rem; }
+            .modal-content { padding: 30px 20px; }
+            .modal-title { font-size: 2rem; }
         }
     </style>
 </head>
@@ -378,10 +496,10 @@
 
 <!-- ========== QUESTION SCREEN ========== -->
 <div id="question-screen">
-    <h1>Do you love me? ❤️</h1>
+    <h1>Da li me voliš? ❤️</h1>
     <div class="buttons">
-        <button id="yes-btn" onclick="sayYes()">Yes</button>
-        <button id="no-btn" onclick="sayNo()">No</button>
+        <button id="yes-btn" onclick="sayYes()">Da</button>
+        <button id="no-btn" onclick="sayNo()">Ne</button>
     </div>
 </div>
 
@@ -393,92 +511,92 @@
         <div class="scroll-track">
             <div class="polaroid" style="--rotation: -4deg;">
                 <img src="photo1.jpeg" alt="Photo 1">
-                <div class="caption">You & Me 💕</div>
+                <div class="caption">Ti i Ja 💕</div>
             </div>
             <div class="polaroid" style="--rotation: 3deg;">
                 <img src="photo2.jpeg" alt="Photo 2">
-                <div class="caption">Forever ❤️</div>
+                <div class="caption">Zauvek ❤️</div>
             </div>
             <div class="polaroid" style="--rotation: -2deg;">
                 <img src="photo3.jpeg" alt="Photo 3">
-                <div class="caption">My favorite 💖</div>
+                <div class="caption">Moje omiljeno 💖</div>
             </div>
             <div class="polaroid" style="--rotation: 5deg;">
                 <img src="photo4.jpeg" alt="Photo 4">
-                <div class="caption">Always 💗</div>
+                <div class="caption">Uvek 💗</div>
             </div>
             <div class="polaroid" style="--rotation: -3deg;">
                 <img src="photo5.jpeg" alt="Photo 5">
-                <div class="caption">My heart 💝</div>
+                <div class="caption">Moje srce 💝</div>
             </div>
             <div class="polaroid" style="--rotation: 2deg;">
                 <img src="photo6.jpeg" alt="Photo 6">
-                <div class="caption">Us 💞</div>
+                <div class="caption">Mi 💞</div>
             </div>
             <div class="polaroid" style="--rotation: -5deg;">
                 <img src="photo7.jpeg" alt="Photo 7">
-                <div class="caption">Memories 📸</div>
+                <div class="caption">Uspomene 📸</div>
             </div>
             <div class="polaroid" style="--rotation: 4deg;">
                 <img src="photo8.jpeg" alt="Photo 8">
-                <div class="caption">Together 🌸</div>
+                <div class="caption">Zajedno 🌸</div>
             </div>
             <div class="polaroid" style="--rotation: -1deg;">
                 <img src="photo9.jpeg" alt="Photo 9">
-                <div class="caption">My world 🌍</div>
+                <div class="caption">Moj svet 🌍</div>
             </div>
             <div class="polaroid" style="--rotation: 3deg;">
                 <img src="photo10.jpeg" alt="Photo 10">
-                <div class="caption">Sunshine ☀️</div>
+                <div class="caption">Moje sunce ☀️</div>
             </div>
             <!-- duplicate -->
             <div class="polaroid" style="--rotation: -4deg;">
                 <img src="photo1.jpeg" alt="Photo 1">
-                <div class="caption">You & Me 💕</div>
+                <div class="caption">Ti i Ja 💕</div>
             </div>
             <div class="polaroid" style="--rotation: 3deg;">
                 <img src="photo2.jpeg" alt="Photo 2">
-                <div class="caption">Forever ❤️</div>
+                <div class="caption">Zauvek ❤️</div>
             </div>
             <div class="polaroid" style="--rotation: -2deg;">
                 <img src="photo3.jpeg" alt="Photo 3">
-                <div class="caption">My favorite 💖</div>
+                <div class="caption">Moje omiljeno 💖</div>
             </div>
             <div class="polaroid" style="--rotation: 5deg;">
                 <img src="photo4.jpeg" alt="Photo 4">
-                <div class="caption">Always 💗</div>
+                <div class="caption">Uvek 💗</div>
             </div>
             <div class="polaroid" style="--rotation: -3deg;">
                 <img src="photo5.jpeg" alt="Photo 5">
-                <div class="caption">My heart 💝</div>
+                <div class="caption">Moje srce 💝</div>
             </div>
             <div class="polaroid" style="--rotation: 2deg;">
                 <img src="photo6.jpeg" alt="Photo 6">
-                <div class="caption">Us 💞</div>
+                <div class="caption">Mi 💞</div>
             </div>
             <div class="polaroid" style="--rotation: -5deg;">
                 <img src="photo7.jpeg" alt="Photo 7">
-                <div class="caption">Memories 📸</div>
+                <div class="caption">Uspomene 📸</div>
             </div>
             <div class="polaroid" style="--rotation: 4deg;">
                 <img src="photo8.jpeg" alt="Photo 8">
-                <div class="caption">Together 🌸</div>
+                <div class="caption">Zajedno 🌸</div>
             </div>
             <div class="polaroid" style="--rotation: -1deg;">
                 <img src="photo9.jpeg" alt="Photo 9">
-                <div class="caption">My world 🌍</div>
+                <div class="caption">Moj svet 🌍</div>
             </div>
             <div class="polaroid" style="--rotation: 3deg;">
                 <img src="photo10.jpeg" alt="Photo 10">
-                <div class="caption">Sunshine ☀️</div>
+                <div class="caption">Moje sunce ☀️</div>
             </div>
         </div>
     </div>
 
     <!-- CENTER -->
     <div class="center-content">
-        <h1 id="love-text">I Love You</h1>
-        <p id="language-label">English 🇬🇧</p>
+        <h1 id="love-text">Volim te</h1>
+        <p id="language-label">Srpski 🇷🇸</p>
     </div>
 
     <!-- RIGHT COLUMN -->
@@ -486,83 +604,83 @@
         <div class="scroll-track">
             <div class="polaroid" style="--rotation: 4deg;">
                 <img src="photo11.jpeg" alt="Photo 11">
-                <div class="caption">Magical ✨</div>
+                <div class="caption">Magično ✨</div>
             </div>
             <div class="polaroid" style="--rotation: -3deg;">
                 <img src="photo12.jpeg" alt="Photo 12">
-                <div class="caption">Bliss 🌺</div>
+                <div class="caption">Sreća 🌺</div>
             </div>
             <div class="polaroid" style="--rotation: 2deg;">
                 <img src="photo13.jpeg" alt="Photo 13">
-                <div class="caption">Our story 📖</div>
+                <div class="caption">Naša priča 📖</div>
             </div>
             <div class="polaroid" style="--rotation: -5deg;">
                 <img src="photo14.jpeg" alt="Photo 14">
-                <div class="caption">Laughter 😄</div>
+                <div class="caption">Smeh 😄</div>
             </div>
             <div class="polaroid" style="--rotation: 3deg;">
                 <img src="photo15.jpeg" alt="Photo 15">
-                <div class="caption">Adventure 🌟</div>
+                <div class="caption">Avantura 🌟</div>
             </div>
             <div class="polaroid" style="--rotation: -2deg;">
                 <img src="photo16.jpeg" alt="Photo 16">
-                <div class="caption">Dreaming 🌙</div>
+                <div class="caption">Snovi 🌙</div>
             </div>
             <div class="polaroid" style="--rotation: 5deg;">
                 <img src="photo17.jpeg" alt="Photo 17">
-                <div class="caption">Home 🏡</div>
+                <div class="caption">Dom 🏡</div>
             </div>
             <div class="polaroid" style="--rotation: -4deg;">
                 <img src="photo18.jpeg" alt="Photo 18">
-                <div class="caption">Joy 🎉</div>
+                <div class="caption">Radost 🎉</div>
             </div>
             <div class="polaroid" style="--rotation: 1deg;">
                 <img src="photo19.jpeg" alt="Photo 19">
-                <div class="caption">Eternity 💫</div>
+                <div class="caption">Večnost 💫</div>
             </div>
             <!-- duplicate -->
             <div class="polaroid" style="--rotation: 4deg;">
                 <img src="photo11.jpeg" alt="Photo 11">
-                <div class="caption">Magical ✨</div>
+                <div class="caption">Magično ✨</div>
             </div>
             <div class="polaroid" style="--rotation: -3deg;">
                 <img src="photo12.jpeg" alt="Photo 12">
-                <div class="caption">Bliss 🌺</div>
+                <div class="caption">Sreća 🌺</div>
             </div>
             <div class="polaroid" style="--rotation: 2deg;">
                 <img src="photo13.jpeg" alt="Photo 13">
-                <div class="caption">Our story 📖</div>
+                <div class="caption">Naša priča 📖</div>
             </div>
             <div class="polaroid" style="--rotation: -5deg;">
                 <img src="photo14.jpeg" alt="Photo 14">
-                <div class="caption">Laughter 😄</div>
+                <div class="caption">Smeh 😄</div>
             </div>
             <div class="polaroid" style="--rotation: 3deg;">
                 <img src="photo15.jpeg" alt="Photo 15">
-                <div class="caption">Adventure 🌟</div>
+                <div class="caption">Avantura 🌟</div>
             </div>
             <div class="polaroid" style="--rotation: -2deg;">
                 <img src="photo16.jpeg" alt="Photo 16">
-                <div class="caption">Dreaming 🌙</div>
+                <div class="caption">Snovi 🌙</div>
             </div>
             <div class="polaroid" style="--rotation: 5deg;">
                 <img src="photo17.jpeg" alt="Photo 17">
-                <div class="caption">Home 🏡</div>
+                <div class="caption">Dom 🏡</div>
             </div>
             <div class="polaroid" style="--rotation: -4deg;">
                 <img src="photo18.jpeg" alt="Photo 18">
-                <div class="caption">Joy 🎉</div>
+                <div class="caption">Radost 🎉</div>
             </div>
             <div class="polaroid" style="--rotation: 1deg;">
                 <img src="photo19.jpeg" alt="Photo 19">
-                <div class="caption">Eternity 💫</div>
+                <div class="caption">Večnost 💫</div>
             </div>
         </div>
     </div>
 
     <!-- SCROLL HINT -->
     <div class="scroll-hint" onclick="scrollToStars()">
-        <span>scroll down</span>
+        <span>skroluj dole</span>
         <div class="arrow">↓</div>
     </div>
 
@@ -573,42 +691,53 @@
     <canvas id="stars-canvas"></canvas>
     <canvas id="fireworks-canvas"></canvas>
 
-    <!-- TIMER -->
     <div class="timer-wrapper">
-        <div class="timer-title">💖 Together Since 💖</div>
-        <div class="timer-subtitle">20 March 2025 · 00:00:00</div>
+        <div class="timer-title">
+            💖 Zajedno od
+            <span class="clickable-heart" onclick="openReasons()">
+                💖
+                <span class="tooltip">klikni me! ✨</span>
+            </span>
+        </div>
+        <div class="timer-subtitle">20. Mart 2025 · 00:00:00</div>
         <div class="timer-boxes">
             <div class="timer-box">
                 <div class="timer-number" id="t-days">0</div>
-                <div class="timer-label">Days</div>
+                <div class="timer-label">Dani</div>
             </div>
             <div class="timer-box">
                 <div class="timer-number" id="t-hours">0</div>
-                <div class="timer-label">Hours</div>
+                <div class="timer-label">Sati</div>
             </div>
             <div class="timer-box">
                 <div class="timer-number" id="t-minutes">0</div>
-                <div class="timer-label">Minutes</div>
+                <div class="timer-label">Minuti</div>
             </div>
             <div class="timer-box">
                 <div class="timer-number" id="t-seconds">0</div>
-                <div class="timer-label">Seconds</div>
+                <div class="timer-label">Sekunde</div>
             </div>
         </div>
     </div>
 
-    <!-- LOVE MESSAGE -->
-    <!-- ✏️ Edit this message to whatever you want to say! -->
     <div class="love-message">
         <p>
-            Every second with you feels like magic.<br>
-            Every minute makes me fall deeper.<br>
-            Every hour reminds me how lucky I am.<br>
-            Every day I choose you, all over again.
+            Svaka sekunda sa tobom je magija.<br>
+            Svaki minut se zaljubljujem još više.<br>
+            Svaki sat me podseća koliko sam srećan.<br>
+            Svaki dan ponovo biram tebe.
         </p>
-        <div class="signature">— Forever yours ❤️</div>
+        <div class="signature">— Zauvek tvoj ❤️</div>
     </div>
+</div>
 
+<!-- ========== 200 REASONS MODAL ========== -->
+<div id="reasons-modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeReasons()">✖</span>
+        <h2 class="modal-title">200 Razloga zašto te volim ❤️</h2>
+        <ul id="reasons-list"></ul>
+    </div>
 </div>
 
 <script>
@@ -616,6 +745,7 @@
     // LOVE PHRASES
     // ============================================================
     const lovePhrases = [
+        { text: "Volim te",                      lang: "Srpski 🇷🇸" },
         { text: "I Love You",                   lang: "English 🇬🇧" },
         { text: "Te Amo",                        lang: "Spanish 🇪🇸" },
         { text: "Je t'aime",                     lang: "French 🇫🇷" },
@@ -632,7 +762,6 @@
         { text: "Szeretlek",                     lang: "Hungarian 🇭🇺" },
         { text: "Te iubesc",                     lang: "Romanian 🇷🇴" },
         { text: "Volim te",                      lang: "Croatian 🇭🇷" },
-        { text: "Ljubim te",                     lang: "Serbian 🇷🇸" },
         { text: "Обичам те",                     lang: "Bulgarian 🇧🇬" },
         { text: "Σ'αγαπώ",                       lang: "Greek 🇬🇷" },
         { text: "Тебе кохаю",                    lang: "Ukrainian 🇺🇦" },
@@ -674,8 +803,8 @@
         { text: "Мен сени жакшы көрөм",          lang: "Kyrgyz 🇰🇬" },
         { text: "Men seni söýýärin",             lang: "Turkmen 🇹🇲" },
         { text: "愛してる",                       lang: "Japanese 🇯🇵" },
-        { text: "我爱你",                         lang: "Chinese Mandarin 🇨🇳" },
-        { text: "我愛你",                         lang: "Chinese Traditional 🇹🇼" },
+        { text: "我爱你",                         lang: "Chinese 🇨🇳" },
+        { text: "我愛你",                         lang: "Traditional Chinese 🇹🇼" },
         { text: "我係愛你㗎",                     lang: "Cantonese 🇭🇰" },
         { text: "사랑해요",                        lang: "Korean 🇰🇷" },
         { text: "Би чамд хайртай",               lang: "Mongolian 🇲🇳" },
@@ -695,17 +824,12 @@
         { text: "Ke a go rata",                  lang: "Tswana 🇧🇼" },
         { text: "Ndinokuda",                     lang: "Shona 🇿🇼" },
         { text: "Waan ku jecelahay",             lang: "Somali 🇸🇴" },
-        { text: "Micumine wena",                 lang: "Xhosa 🇿🇦" },
         { text: "Aroha au ia koe",               lang: "Maori 🇳🇿" },
-        { text: "Au fiafia ia te oe",            lang: "Samoan 🇼🇸" },
         { text: "Aloha au iā ʻoe",               lang: "Hawaiian 🌺" },
-        { text: "Au kata rogo tiko",             lang: "Fijian 🇫🇯" },
-        { text: "Asavakit",                      lang: "Inuktitut ❄️" },
-        { text: "Yeh-hi-lo",                     lang: "Cherokee 🪶" },
     ];
 
     let noCount    = 0;
-    let phraseIndex = 0;
+    let phraseIndex = 1;
     let yesFontSize = 1.2;
     let yesPadding  = 15;
     let noFontSize  = 1.2;
@@ -734,13 +858,9 @@
     // ============================================================
     function sayYes() {
         document.getElementById('question-screen').style.display = 'none';
-        const ls = document.getElementById('love-screen');
-        ls.style.display = 'flex';
-
-        // show starry section too so user can scroll to it
+        document.getElementById('love-screen').style.display = 'flex';
         document.getElementById('starry-section').style.display = 'flex';
 
-        // cycle phrases
         setInterval(() => {
             const cur = lovePhrases[phraseIndex];
             document.getElementById('love-text').textContent    = cur.text;
@@ -752,10 +872,11 @@
         startTimer();
         initStars();
         initFireworks();
+        loadReasons();
     }
 
     // ============================================================
-    // SCROLL TO STARS
+    // SCROLL
     // ============================================================
     function scrollToStars() {
         document.getElementById('starry-section').scrollIntoView({ behavior: 'smooth' });
@@ -770,8 +891,8 @@
             const h = document.createElement('div');
             h.classList.add('heart');
             h.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-            h.style.left   = Math.random() * 100 + 'vw';
-            h.style.top    = '100vh';
+            h.style.left     = Math.random() * 100 + 'vw';
+            h.style.top      = '100vh';
             h.style.fontSize = (Math.random() * 1.5 + 0.8) + 'rem';
             const dur = (Math.random() * 4 + 4);
             h.style.animationDuration = dur + 's';
@@ -781,21 +902,20 @@
     }
 
     // ============================================================
-    // TIMER  — counting up from 20 March 2025 00:00:00
+    // TIMER — Local midnight March 20, 2025
     // ============================================================
     function startTimer() {
-        const start = new Date('2025-03-20T00:00:00');
+        const start = new Date(2025, 2, 20, 0, 0, 0);
 
         function update() {
             const now  = new Date();
-            const diff = now - start;          // milliseconds
+            const diff = now - start;
 
             if (diff < 0) {
-                // future-proof: if somehow run before the date
                 document.getElementById('t-days').textContent    = '0';
-                document.getElementById('t-hours').textContent   = '0';
-                document.getElementById('t-minutes').textContent = '0';
-                document.getElementById('t-seconds').textContent = '0';
+                document.getElementById('t-hours').textContent   = '00';
+                document.getElementById('t-minutes').textContent = '00';
+                document.getElementById('t-seconds').textContent = '00';
                 return;
             }
 
@@ -815,21 +935,255 @@
     }
 
     // ============================================================
+    // 200 REASONS
+    // ============================================================
+    const myReasons = [
+        "Tvoj osmeh",
+        "Tvoja kosa",
+        "Tvoj smeh",
+        "Tvoj jedinstveni osmeh",
+        "Tvoje usne",
+        "Tvoj smisao za humor",
+        "Tvoje oči",
+        "Način na koji se ponašaš",
+        "Samopouzdanje",
+        "Prezgodna",
+        "Prelepa",
+        "Preslatka",
+        "Duhovita",
+        "Pametna",
+        "Tvoja odanost",
+        "Tvoja strast",
+        "Tvoja snaga",
+        "Tvoja iskrenost",
+        "Tvoja energija",
+        "Tvoj glas",
+        "Tvoja podrška meni",
+        "Tvoja kreativnost",
+        "Jedinstvena",
+        "Tvoja sposobnost da me nasmeješ kada sam tužan",
+        "Tvoje veliko srce",
+        "Tvoja toplina",
+        "Tvoj stil",
+        "Tvoj šarm",
+        "Tvoja pozitivna energija",
+        "Tvoje strpljenje",
+        "Tvoja hrabrost",
+        "Tvoja vrednoća",
+        "Tvoje oproštajno srce",
+        "Tvoji topli zagrljaji",
+        "Tvoja brižnost",
+        "Tvoja nežnost",
+        "Moja motivacija",
+        "Tvoja ljubav prema mojoj porodici",
+        "Tvoje prisustvo",
+        "Tvoja inteligencija",
+        "Tvoja pažljivost",
+        "Tvoji poljupci u čelo",
+        "Tvoja radoznalost",
+        "Tvoja zahvalnost",
+        "Tvoja duša",
+        "Tvoje zadirkivanje",
+        "Tvoje verovanje u mene",
+        "Tvoje verovanje u Boga",
+        "Tvoja skromnost",
+        "Tvoja neverovatnost",
+        "Tvoja razigranost",
+        "Tvoja društvenost",
+        "Tvoja prirodna lepota",
+        "Tvoj osmeh kada se smeješ",
+        "Tvoja ljubav prema tvojoj porodici",
+        "Tvoja dobrota",
+        "Tvoja zaigrana strana",
+        "Tvoje pamćenje naših lepih trenutaka",
+        "Tvoj dodir",
+        "Tvoj muzički ukus",
+        "Tvoje poverenje",
+        "Tvoje razumevanje",
+        "Tvoja posvećenost ciljevima",
+        "Tvoja strast prema onome što voliš",
+        "Tvoja toplina",
+        "Tvoji komplimenti",
+        "Tvoje male šale",
+        "Tvoje poštovanje",
+        "Tvoj šarm",
+        "Tvoja gracioznost",
+        "Tvoje umirivanje",
+        "Tvoja pažnja",
+        "Tvoja uverenja",
+        "Ne osuđuješ me",
+        "Naša povezanost",
+        "Naša veza",
+        "Tvoja stidljivost",
+        "Tvoja radoznalost",
+        "Tvoje samopoštovanje",
+        "Tvoja briga o sebi (nije baš neka, moraš pojačaš jelo)",
+        "Tvoj lični rast",
+        "Tvoja vezanost",
+        "Tvoj trud",
+        "Ti me greješ",
+        "Tvoji poljupci",
+        "Tvoja koža",
+        "Tvoja nesebičnost",
+        "Tvoja blesavost",
+        "Tvoja porodica",
+        "Tvoje mane",
+        "Tvoja zrelost",
+        "Tvoja odgovornost",
+        "Tvoji zubi",
+        "Tvoji saveti",
+        "Tvoje manire",
+        "Tvoja ozbiljnost",
+        "Tvoja ljubav",
+        "Slatka",
+        "Učinila si me boljom osobom",
+        "Šarmantna",
+        "Tvoja odgovornost",
+        "Tvoje oproštanje",
+        "Zabavna",
+        "Tvoj miris",
+        "Tvoj prirodni miris",
+        "Tvoja nežnost",
+        "Tvoja savršenost",
+        "Tvoja ljubavnost",
+        "Tvoja vrednost",
+        "Trudiš se za mene",
+        "Tvoje telo",
+        "Tvoja smirenost",
+        "Tvoje postojanje",
+        "Tvoja slatkoća",
+        "Tvoja hrabrost",
+        "Tvoja pamet",
+        "Imaš tako slatku dušu",
+        "Činiš da se osećam sigurno",
+        "Budiš dete u meni",
+        "Tvoja mudrost",
+        "Primećuješ sitnice kod mene",
+        "Tvoja velikodušnost",
+        "Tvoj ponos",
+        "Nikad ne sumnjaš u mene",
+        "Tvoje davanje",
+        "Tvoja energičnost",
+        "Tvoj talenat",
+        "Dar od Boga",
+        "Ti si moj svet",
+        "Bila si ona za kog sam se molio",
+        "Tvoje ohrabrivanje",
+        "Tvoja otvorenost",
+        "Tvoje uzbuđenje",
+        "Način na koji me gledaš",
+        "Stvari koje sam naučio od tebe",
+        "Tvoja posvećenost",
+        "Ti si toliko posebna",
+        "Anđeo",
+        "Izuzetna",
+        "Pristojna",
+        "Neodoljiva",
+        "To što si ti ti",
+        "Tvoja nežnost",
+        "Naš prvi put zajedno",
+        "Tvoja dela",
+        "Ti dok me gledaš",
+        "Naš prvi poljubac",
+        "Naš prvi zagrljaj",
+        "Tvoje šale",
+        "Tvoj mek i utešan glas",
+        "Nikad ne odustaješ",
+        "Naši razgovori kasno noću",
+        "Tvoje obraze",
+        "Ti dok spavaš",
+        "Naše maženje",
+        "Avanturistički duh",
+        "Činila si da se osećam važnim",
+        "Činila si sve za mene",
+        "Tvoj stomačić (više moj)",
+        "Tvoja razigranost",
+        "Tvoje reči ohrabrenja",
+        "Znaš sve o meni",
+        "Uvek si tu za mene kad mi treba",
+        "Tvoje kuvanje",
+        "Tvoja ozbiljnost",
+        "Ti si divna",
+        "Tvoja kul osobina",
+        "Tvoja dostignuća",
+        "Tvoji gestovi",
+        "Tvoje gostoprimstvo",
+        "Tvoja inspiracija",
+        "Toliko si se žrtvovala za mene",
+        "Promenila si me na bolje",
+        "Volela si me uprkos svim mojim greškama",
+        "Dala si mi mnogo šansi",
+        "Volela si me kroz sve",
+        "Tvoj ego",
+        "Tvoje reči",
+        "Tvoja uteha",
+        "Tvoje društvo",
+        "Tvoja briga o meni",
+        "Voliš da istražuješ i ideš na nova mesta",
+        "Ti si najbolja stvar koja mi se ikad desila",
+        "Tvoja pažljivost",
+        "Tvoje prihvatanje",
+        "Tvoja neverovatnost",
+        "Tvoja smirenost",
+        "Tvoja pristojnost",
+        "Neodoljiva",
+        "Tvoja velikodušnost",
+        "Tvoja ljubaznost prema drugima",
+        "Tvoja hrabrost",
+        "Tvoj pogled koji me umiruje",
+        "Tvoje šale koje me oraspolože i kad neću da se smejem",
+        "Tvoja upornost da sve ispraviš kad nešto pođe po zlu",
+        "Način na koji me slušaš bez osuđivanja",
+        "Tvoje male poruke koje mi ulepšaju dan",
+        "Način na koji me voliš iskreno i bezuslovno",
+        "Način na koji izgovaraš moje ime i nadimke",
+        "To što si moj dom, gde god da si",
+    ];
+
+    function loadReasons() {
+        const listEl = document.getElementById('reasons-list');
+        listEl.innerHTML = '';
+        for (let i = 0; i < myReasons.length; i++) {
+            const li = document.createElement('li');
+            li.innerHTML = `<span>${i + 1}.</span> ${myReasons[i]}`;
+            listEl.appendChild(li);
+        }
+    }
+
+    function openReasons() {
+        const modal = document.getElementById('reasons-modal');
+        modal.style.display = 'flex';
+        setTimeout(() => { modal.style.opacity = '1'; }, 10);
+        // scroll to top of list
+        document.querySelector('.modal-content').scrollTop = 0;
+    }
+
+    function closeReasons() {
+        const modal = document.getElementById('reasons-modal');
+        modal.style.opacity = '0';
+        setTimeout(() => { modal.style.display = 'none'; }, 300);
+    }
+
+    window.onclick = function(event) {
+        const modal = document.getElementById('reasons-modal');
+        if (event.target == modal) closeReasons();
+    }
+
+    // ============================================================
     // STARS
     // ============================================================
     function initStars() {
         const canvas = document.getElementById('stars-canvas');
         const ctx    = canvas.getContext('2d');
+        const stars  = [];
 
         function resize() {
             canvas.width  = canvas.offsetWidth;
             canvas.height = canvas.offsetHeight;
-            drawStars();
+            generateStars();
         }
 
-        const stars = [];
-        function drawStars() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        function generateStars() {
             stars.length = 0;
             const count = Math.floor((canvas.width * canvas.height) / 3000);
             for (let i = 0; i < count; i++) {
@@ -844,24 +1198,22 @@
             }
         }
 
-        function animateStars() {
+        function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             stars.forEach(s => {
-                // twinkle
                 if (s.growing) { s.alpha += s.speed; if (s.alpha >= 1) s.growing = false; }
                 else            { s.alpha -= s.speed; if (s.alpha <= 0.1) s.growing = true; }
-
                 ctx.beginPath();
                 ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
                 ctx.fillStyle = `rgba(255,255,255,${s.alpha})`;
                 ctx.fill();
             });
-            requestAnimationFrame(animateStars);
+            requestAnimationFrame(animate);
         }
 
         resize();
         window.addEventListener('resize', resize);
-        animateStars();
+        animate();
     }
 
     // ============================================================
@@ -870,6 +1222,7 @@
     function initFireworks() {
         const canvas = document.getElementById('fireworks-canvas');
         const ctx    = canvas.getContext('2d');
+        const particles = [];
 
         function resize() {
             canvas.width  = canvas.offsetWidth;
@@ -878,41 +1231,36 @@
         resize();
         window.addEventListener('resize', resize);
 
-        const particles = [];
-
         const colors = [
             '#e74c7d','#ff6b9d','#ff9ff3','#ffd32a',
             '#fff200','#00d2d3','#54a0ff','#ff6b6b',
             '#ff9f43','#c44569','#f8a5c2','#ffeaa7',
         ];
 
-        function launchFirework() {
+        function launch() {
             const x = Math.random() * canvas.width;
             const y = Math.random() * canvas.height * 0.6 + 50;
             const color = colors[Math.floor(Math.random() * colors.length)];
             const count = Math.floor(Math.random() * 60) + 60;
-
             for (let i = 0; i < count; i++) {
-                const angle  = (Math.PI * 2 / count) * i;
-                const speed  = Math.random() * 4 + 1.5;
-                const size   = Math.random() * 3 + 1;
+                const angle = (Math.PI * 2 / count) * i;
+                const speed = Math.random() * 4 + 1.5;
                 particles.push({
                     x, y,
-                    vx:      Math.cos(angle) * speed,
-                    vy:      Math.sin(angle) * speed,
-                    alpha:   1,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    alpha: 1,
                     color,
-                    size,
-                    decay:   Math.random() * 0.015 + 0.008,
+                    size: Math.random() * 3 + 1,
+                    decay: Math.random() * 0.015 + 0.008,
                     gravity: 0.06,
                 });
             }
         }
 
-        function animateFireworks() {
+        function animate() {
             ctx.fillStyle = 'rgba(0,0,0,0.15)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-
             for (let i = particles.length - 1; i >= 0; i--) {
                 const p = particles[i];
                 p.x     += p.vx;
@@ -920,35 +1268,25 @@
                 p.vy    += p.gravity;
                 p.vx    *= 0.98;
                 p.alpha -= p.decay;
-
                 if (p.alpha <= 0) { particles.splice(i, 1); continue; }
-
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                ctx.fillStyle = p.color.replace(')', `,${p.alpha})`).replace('rgb','rgba');
-
-                // handle hex colors
                 ctx.globalAlpha = p.alpha;
                 ctx.fillStyle   = p.color;
                 ctx.fill();
                 ctx.globalAlpha = 1;
             }
-
-            requestAnimationFrame(animateFireworks);
+            requestAnimationFrame(animate);
         }
 
-        animateFireworks();
+        animate();
 
-        // launch a firework every 2–5 seconds
-        function scheduleFirework() {
-            launchFirework();
-            // sometimes double launch for extra wow
-            if (Math.random() > 0.5) {
-                setTimeout(launchFirework, 300);
-            }
-            setTimeout(scheduleFirework, Math.random() * 3000 + 2000);
+        function schedule() {
+            launch();
+            if (Math.random() > 0.5) setTimeout(launch, 300);
+            setTimeout(schedule, Math.random() * 3000 + 2000);
         }
-        scheduleFirework();
+        schedule();
     }
 </script>
 </body>
